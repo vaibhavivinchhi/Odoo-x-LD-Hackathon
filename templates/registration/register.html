@@ -1,0 +1,145 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Create Account | GlobeTrotter</title>
+
+    <link rel="stylesheet" href="{% static 'css/auth.css' %}">
+</head>
+
+<body class="auth-page">
+
+    <!-- Background -->
+    <div class="auth-background register-background"></div>
+    <div class="auth-overlay"></div>
+
+    <!-- Centered Container -->
+    <main class="auth-container">
+
+        <section class="auth-card register-card">
+
+            <!-- Brand -->
+            <div class="brand">
+                <div class="brand-icon">✈</div>
+                <span>GlobeTrotter</span>
+            </div>
+
+            <!-- Heading -->
+            <h1>Create Account</h1>
+
+            <p class="auth-subtitle">
+                Start planning your next adventure.
+            </p>
+
+            <!-- Messages -->
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="message">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            <!-- Registration Form -->
+            <form method="POST" class="auth-form">
+
+                {% csrf_token %}
+
+                <!-- Username -->
+                <div class="form-group">
+                    <label for="username">
+                        Username
+                    </label>
+
+                    <input
+                        type="text"
+                        id="username"
+                        name="username"
+                        placeholder="Choose a username"
+                        required
+                        autocomplete="username"
+                    >
+                </div>
+
+
+                <!-- Email -->
+                <div class="form-group">
+                    <label for="email">
+                        Email
+                    </label>
+
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="Enter your email"
+                        required
+                        autocomplete="email"
+                    >
+                </div>
+
+
+                <!-- Name -->
+                <div class="form-group">
+                    <label for="name">
+                        Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        placeholder="Enter your name"
+                        required
+                        autocomplete="name"
+                    >
+                </div>
+
+
+                <!-- Password -->
+                <div class="form-group">
+                    <label for="password">
+                        Password
+                    </label>
+
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder="Create a password"
+                        required
+                        autocomplete="new-password"
+                    >
+                </div>
+
+
+                <!-- Submit -->
+                <button type="submit" class="auth-button">
+                    Create Account
+                    <span>→</span>
+                </button>
+
+            </form>
+
+
+            <!-- Login Link -->
+            <div class="auth-links">
+
+                <span>Already have an account?</span>
+
+                <a href="{% url 'login' %}">
+                    Sign in
+                </a>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</body>
+</html>

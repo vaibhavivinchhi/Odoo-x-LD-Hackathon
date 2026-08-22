@@ -1,0 +1,14 @@
+{% extends "travel/base.html" %}{% block title %}Dashboard{% endblock %}
+{% block content %}<div class="container-fluid px-lg-5 py-4">
+<section class="hero-panel"><div class="hero-overlay"></div><div class="hero-content"><span class="eyebrow">YOUR TRAVEL DESK</span><h1>Where will you go next,<br><span>{{ user.first_name|default:user.username }}?</span></h1><p>Build a journey around your dates, interests and budget.</p><a class="btn btn-light btn-lg" href="{% url 'trip_create' %}"><i class="bi bi-plus-lg"></i> Plan a new trip</a></div></section>
+<div class="stats-grid my-4">
+<div class="stat-card"><span>Total trips</span><strong>{{ stats.total }}</strong><i class="bi bi-map"></i></div>
+<div class="stat-card"><span>Upcoming</span><strong>{{ stats.upcoming }}</strong><i class="bi bi-airplane"></i></div>
+<div class="stat-card"><span>Ongoing</span><strong>{{ stats.ongoing }}</strong><i class="bi bi-compass"></i></div>
+<div class="stat-card"><span>Completed</span><strong>{{ stats.completed }}</strong><i class="bi bi-check2-circle"></i></div>
+</div>
+<div class="section-head"><div><span class="eyebrow dark">YOUR JOURNEYS</span><h2>Upcoming trips</h2></div><a href="{% url 'trip_list' %}">View all <i class="bi bi-arrow-right"></i></a></div>
+<div class="row g-4">{% for trip in upcoming %}<div class="col-md-6 col-xl-3"><a class="trip-card" href="{% url 'trip_detail' trip.pk %}"><div class="trip-image" style="{% if trip.cover_image %}background-image:url('{{ trip.cover_image.url }}'){% endif %}"><span class="status-pill">{{ trip.get_status_display }}</span></div><div class="p-3"><h5>{{ trip.title }}</h5><div class="small text-muted">{{ trip.start_date|date:"M d" }} — {{ trip.end_date|date:"M d, Y" }}</div><div class="mt-3 d-flex justify-content-between small"><span>{{ trip.destination_count }} stops</span><span>{{ trip.currency }} {{ trip.total_estimated_cost|floatformat:0 }}</span></div></div></a></div>{% empty %}<div class="empty-state"><i class="bi bi-suitcase2"></i><h4>No trips yet</h4><p>Start with a destination and a date.</p><a class="btn btn-primary" href="{% url 'trip_create' %}">Create first trip</a></div>{% endfor %}</div>
+<div class="section-head mt-5"><div><span class="eyebrow dark">GET INSPIRED</span><h2>Popular destinations</h2></div><a href="{% url 'explore' %}">Explore all <i class="bi bi-arrow-right"></i></a></div>
+<div class="row g-4">{% for d in destinations %}<div class="col-6 col-md-4 col-xl-2"><a class="destination-mini" href="{% url 'explore' %}?q={{ d.name|urlencode }}"><div class="dest-img" style="background-image:url('{{ d.image_url }}')"></div><strong>{{ d.name }}</strong><span>{{ d.country }}</span></a></div>{% endfor %}</div>
+</div>{% endblock %}

@@ -1,0 +1,19 @@
+{% extends "travel/base.html" %}{% block title %}Plan the journey{% endblock %}
+{% block content %}
+<div class="landing">
+<section class="hero-landing">
+  <div class="hero-copy">
+    <span class="eyebrow"><i class="bi bi-stars"></i> Smart travel planning</span>
+    <h1>Plan the journey.<br><span class="gradient-text">Live the story.</span></h1>
+    <p>Create personalized multi-city trips, discover amazing destinations, organize activities, and keep your travel budget under control — all in one beautiful platform.</p>
+    <div class="hero-actions"><a class="gradient-btn btn-lg" href="{% url 'register' %}">Start Planning <i class="bi bi-arrow-right ms-1"></i></a><a class="btn btn-outline-light btn-lg" href="{% url 'explore' %}">Explore Destinations</a></div>
+    <div class="hero-stats"><div class="hero-stat"><strong>500+</strong><span>Destinations</span></div><div class="hero-stat"><strong>1K+</strong><span>Activities</span></div><div class="hero-stat"><strong>10K+</strong><span>Travelers</span></div></div>
+  </div>
+  <div class="hero-visual">
+    <div class="travel-card"><div class="location-chip">📍 Goa, India</div><div class="rating-chip"><span class="d-block text-warning">★</span><strong>4.9</strong><small class="d-block text-muted">Traveler Rating</small></div><div class="trip-glass"><span class="small-label">NEXT ADVENTURE</span><h3>Explore Goa</h3><div class="d-flex align-items-center gap-3 text-white-50"><span>5 Days</span><span>•</span><span>2 Travelers</span><span class="round-arrow"><i class="bi bi-arrow-right"></i></span></div></div></div>
+    <div class="budget-float"><div class="small text-white-50">Trip Budget</div><strong>₹25,000</strong></div>
+  </div>
+</section>
+<section class="landing-section"><span class="eyebrow">Everything in one place</span><h2 class="section-title">From idea to itinerary.</h2><p class="section-subtitle">GlobeTrotter turns your travel plans into a practical, shareable journey — with destinations, activities, schedules and expenses connected together.</p><div class="feature-grid"><div class="feature-card"><div class="feature-icon"><i class="bi bi-map"></i></div><h3>Build multi-city trips</h3><p>Arrange destinations, dates and stops in the order that makes sense for your journey.</p></div><div class="feature-card"><div class="feature-icon"><i class="bi bi-calendar2-check"></i></div><h3>Plan every day</h3><p>Create a day-wise itinerary and keep activities, notes and timing easy to follow.</p></div><div class="feature-card"><div class="feature-icon"><i class="bi bi-wallet2"></i></div><h3>Stay on budget</h3><p>Track accommodation, food, transport, activities and other expenses in one view.</p></div></div></section>
+</div>
+{% endblock %}

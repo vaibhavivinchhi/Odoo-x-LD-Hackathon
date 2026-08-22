@@ -1,0 +1,23 @@
+{% extends "travel/base.html" %}
+{% block title %}Profile{% endblock %}
+{% block content %}
+<div class="container py-5" style="max-width:1100px">
+  <div class="profile-hero">
+    <div class="avatar xl">{{ user.first_name|default:user.username|first|upper }}</div>
+    <div class="flex-grow-1"><span class="eyebrow">YOUR PROFILE</span><h1>{{ user.get_full_name|default:user.username }}</h1><p>{{ user.email }}</p></div>
+    <a class="trip-action-btn" href="#edit-profile"><i class="bi bi-pencil"></i> Edit profile</a>
+  </div>
+  <div class="row g-4 mt-2">
+    <div class="col-lg-7" id="edit-profile"><div class="form-card"><div class="d-flex justify-content-between align-items-center mb-3"><div><span class="eyebrow dark">ACCOUNT</span><h3 class="mb-0">Personal details</h3></div><span class="badge-soft">Editable</span></div>
+      <form method="post" enctype="multipart/form-data">{% csrf_token %}
+        <div class="row g-3"><div class="col-md-6"><label class="form-label">First name</label>{{ user_form.first_name }}</div><div class="col-md-6"><label class="form-label">Last name</label>{{ user_form.last_name }}</div><div class="col-12"><label class="form-label">Email</label>{{ user_form.email }}</div><div class="col-md-6"><label class="form-label">Phone</label>{{ profile_form.phone }}</div><div class="col-md-6"><label class="form-label">Country</label>{{ profile_form.country }}</div><div class="col-md-6"><label class="form-label">City</label>{{ profile_form.city }}</div><div class="col-12"><label class="form-label">Bio</label>{{ profile_form.bio }}</div><div class="col-12"><label class="form-label">Profile photo</label>{{ profile_form.avatar }}</div></div>
+        <button class="trip-action-btn mt-4" type="submit"><i class="bi bi-check2-circle"></i> Save changes</button>
+      </form>
+    </div></div>
+    <div class="col-lg-5">
+      <div class="card-premium p-4"><span class="eyebrow dark">SAVED PLACES</span><h3 class="mb-3">{{ saved|length }} destinations</h3>{% for item in saved %}<div class="stop-item"><span class="stop-number"><i class="bi bi-bookmark-fill"></i></span><div><strong>{{ item.destination.name }}</strong><div class="small text-muted">{{ item.destination.country }}</div></div><a class="icon-btn ms-auto" href="{% url 'explore' %}?q={{ item.destination.name|urlencode }}"><i class="bi bi-arrow-up-right"></i></a></div>{% empty %}<p class="text-muted">Save places from Explore and they will appear here.</p><a class="trip-action-btn" href="{% url 'explore' %}">Explore destinations</a>{% endfor %}</div>
+      <div class="card-premium p-4 mt-4 danger-zone"><span class="eyebrow dark">ACCOUNT CONTROL</span><h4>Delete account</h4><p class="text-muted">This permanently removes your profile and trips. This action cannot be undone.</p><form method="post" action="{% url 'delete_account' %}" onsubmit="return confirm('Delete your GlobeTrotter account permanently?');">{% csrf_token %}<button class="btn btn-outline-danger w-100" type="submit"><i class="bi bi-trash3 me-2"></i> Delete my account</button></form></div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,67 @@
+{% extends "travel/base.html" %}
+{% block title %}Add destination stop{% endblock %}
+{% block content %}
+<div class="container py-5" style="max-width:850px">
+  <div class="form-card">
+    <a href="{{ back_url }}" class="back-link-dark"><i class="bi bi-arrow-left"></i> Back to {{ trip.title }}</a>
+    <div class="d-flex justify-content-between align-items-start gap-3 mt-3">
+      <div><span class="eyebrow dark">BUILD YOUR ROUTE</span><h2 class="mt-2">Add a destination stop</h2><p class="text-muted mb-0">Choose a city, then set how long you will stay there.</p></div>
+      <span class="badge-soft"><i class="bi bi-calendar3 me-1"></i>{{ trip.start_date|date:"M d" }} – {{ trip.end_date|date:"M d, Y" }}</span>
+    </div>
+
+    <form method="post" class="mt-4" id="stopForm">
+      {% csrf_token %}
+      {% if form.non_field_errors %}<div class="alert alert-danger">{{ form.non_field_errors }}</div>{% endif %}
+      {{ form.destination }}
+      <label class="form-label">Destination</label>
+      <div class="destination-picker">
+        <input id="destinationSearch" class="form-control destination-picker-search" type="search" placeholder="Search city or country..." autocomplete="off">
+        <div class="destination-picker-list" id="destinationList">
+          {% for d in destinations %}
+          <button type="button" class="destination-option {% if form.destination.value|stringformat:'s' == d.pk|stringformat:'s' %}selected{% endif %}" data-id="{{ d.pk }}" data-name="{{ d.name }}" data-country="{{ d.country }}" data-search="{{ d.name|lower }} {{ d.country|lower }} {{ d.region|lower }}">
+            <span class="dest-mini-thumb" {% if d.image_url %}style="background-image:url('{{ d.image_url }}')"{% endif %}></span>
+            <span class="flex-grow-1"><strong>{{ d.name }}</strong><small>{{ d.country }}{% if d.region %} · {{ d.region }}{% endif %}</small></span>
+            <i class="bi bi-chevron-right"></i>
+          </button>
+          {% empty %}<div class="soft-empty">No destinations are available yet. Ask an admin to seed the destination catalogue.</div>{% endfor %}
+        </div>
+        <div class="destination-picked" id="destinationPicked"><span><i class="bi bi-geo-alt-fill me-2"></i><strong id="pickedName">Choose a destination above</strong></span><span class="small" id="pickedCountry"></span></div>
+      </div>
+      {% if form.destination.errors %}<div class="text-danger small mt-2">{{ form.destination.errors|striptags }}</div>{% endif %}
+
+      <div class="row g-3 mt-2">
+        <div class="col-md-6"><label class="form-label">Arrival date</label>{{ form.arrival_date }}{% for e in form.arrival_date.errors %}<div class="text-danger small">{{ e }}</div>{% endfor %}</div>
+        <div class="col-md-6"><label class="form-label">Departure date</label>{{ form.departure_date }}{% for e in form.departure_date.errors %}<div class="text-danger small">{{ e }}</div>{% endfor %}</div>
+        <div class="col-md-6"><label class="form-label">Accommodation cost</label>{{ form.accommodation_cost }}</div>
+        <div class="col-md-6"><label class="form-label">Transport to next stop</label>{{ form.transport_to_next }}</div>
+        <div class="col-12"><label class="form-label">Notes</label>{{ form.notes }}</div>
+      </div>
+      <div class="d-flex justify-content-end gap-2 mt-4"><a href="{{ back_url }}" class="btn btn-glass">Cancel</a><button class="trip-action-btn" type="submit"><i class="bi bi-plus-circle"></i> Add stop</button></div>
+    </form>
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+const search=document.getElementById('destinationSearch');
+const list=document.getElementById('destinationList');
+const hidden=document.getElementById('id_destination');
+const pickedName=document.getElementById('pickedName');
+const pickedCountry=document.getElementById('pickedCountry');
+const options=[...document.querySelectorAll('.destination-option')];
+function choose(btn){
+  options.forEach(x=>x.classList.remove('selected'));
+  btn.classList.add('selected');
+  hidden.value=btn.dataset.id;
+  pickedName.textContent=btn.dataset.name;
+  pickedCountry.textContent=btn.dataset.country;
+}
+options.forEach(btn=>btn.addEventListener('click',()=>choose(btn)));
+search.addEventListener('input',()=>{
+  const q=search.value.toLowerCase().trim();
+  options.forEach(btn=>btn.hidden=!btn.dataset.search.includes(q));
+});
+const selected=options.find(x=>x.classList.contains('selected'));
+if(selected) choose(selected);
+</script>
+{% endblock %}

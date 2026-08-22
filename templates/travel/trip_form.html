@@ -1,0 +1,9 @@
+{% extends "travel/base.html" %}{% block title %}{{ title }}{% endblock %}
+{% block content %}<div class="container py-5" style="max-width:980px"><div class="page-head"><div><span class="eyebrow dark">TRIP PLANNER</span><h1>{{ title }}</h1><p>Set the foundations. We'll keep the rest organized.</p></div></div>
+<div class="form-card"><form method="post" enctype="multipart/form-data">{% csrf_token %}{% if form.non_field_errors %}<div class="alert alert-danger">{{ form.non_field_errors }}</div>{% endif %}
+<div class="row g-4"><div class="col-md-8"><label class="form-label">Trip name</label>{{ form.title }}</div><div class="col-md-4"><label class="form-label">Starting location</label>{{ form.starting_location }}</div>
+<div class="col-md-6"><label class="form-label">Start date</label>{{ form.start_date }}</div><div class="col-md-6"><label class="form-label">End date</label>{{ form.end_date }}</div>
+<div class="col-12"><label class="form-label">Description</label>{{ form.description }}</div>
+<div class="col-md-5"><label class="form-label">Total budget</label>{{ form.budget }}</div><div class="col-md-3"><label class="form-label">Currency</label>{{ form.currency }}</div><div class="col-md-4"><label class="form-label">Cover photo</label>{{ form.cover_image }}</div>
+<div class="col-12"><div class="form-check form-switch">{{ form.is_public }}<label class="form-check-label">Make this trip public</label></div></div></div>
+<div class="d-flex justify-content-end gap-2 mt-4"><a href="{% url 'trip_list' %}" class="btn btn-light">Cancel</a><button class="btn btn-primary btn-lg">Save trip <i class="bi bi-arrow-right"></i></button></div></form></div></div>{% endblock %}
